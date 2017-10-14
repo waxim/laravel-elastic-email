@@ -4,7 +4,7 @@ namespace Dena\LaravelElasticEmail;
 
 use GuzzleHttp\ClientInterface;
 use Illuminate\Mail\Transport\Transport;
-use Swift_Mime_Message;
+use Swift_Mime_SimpleMessage;
 
 class ElasticTransport extends Transport
 {
@@ -56,7 +56,7 @@ class ElasticTransport extends Transport
     /**
      * {@inheritdoc}
      */
-    public function send(Swift_Mime_Message $message, &$failedRecipients = null)
+    public function send(Swift_Mime_SimpleMessage $message, &$failedRecipients = null)
     {
         $this->beforeSendPerformed($message);
        
@@ -89,7 +89,7 @@ class ElasticTransport extends Transport
      * @param  \Swift_Mime_Message $message
      * @return text|null
      */
-    protected function getText(Swift_Mime_Message $message)
+    protected function getText(Swift_Mime_SimpleMessage $message)
     {
         $text = null;
         
@@ -109,7 +109,7 @@ class ElasticTransport extends Transport
 	 *
 	 * @return array
 	 */
-    protected function getFromAddress(Swift_Mime_Message $message)
+    protected function getFromAddress(Swift_Mime_SimpleMessage $message)
 	{
 		return [
 			'email' => array_keys($message->getFrom())[0],
@@ -117,7 +117,7 @@ class ElasticTransport extends Transport
 		];
 	}
 	
-	protected function getEmailAddresses(Swift_Mime_Message $message, $method = 'getTo')
+	protected function getEmailAddresses(Swift_Mime_SimpleMessage $message, $method = 'getTo')
 	{
 		$data = call_user_func([$message, $method]);
 		
